@@ -5,7 +5,7 @@ resource "vault_gcp_auth_backend" "gcp" {
 
 resource "vault_gcp_auth_backend_role" "this" {
   for_each = var.gcp_auth_backend_roles
-  backend                = vault_gcp_auth_backend.gcp[0].path
+  backend                = var.enable_gcp_auth_backend ? vault_gcp_auth_backend.gcp[0].path : "gcp"
   role                   = each.key
   type                   = "iam"
   bound_service_accounts = each.value.bound_service_accounts
