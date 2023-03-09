@@ -7,11 +7,13 @@ variable "policies" {
       value = string
     }))
   }))
+  default = {}
 }
 
 variable "enable_gcp_auth_backend" {
   description = "Enable GCP authentication backend"
   type = bool
+  default = false
 }
 
 variable "gcp_auth_backend_roles" {
@@ -20,4 +22,41 @@ variable "gcp_auth_backend_roles" {
     bound_service_accounts = list(string)
     token_policies = list(string)
   }))
+  default = {}
+}
+
+variable "enable_oidc_google" {
+  description = "Enable Google OIDC for SSO"
+  type = bool
+  default = false
+}
+
+variable "jwt_auth_backend_roles" {
+  description = "JWT auth backend roles to create. Policies must be created using the `policies` variable"
+  type = map(object({
+    backend = string
+    role_type = string
+    token_policies = list(string)
+    allowed_redirect_uris = list(string)
+  }))
+  default = {}
+}
+
+variable "oidc_google_default_role" {
+  description = "Specifies a default role for Google OIDC"
+  type = string
+  default = null
+}
+
+variable "oidc_google_client_id" {
+  description = "OIDC Client ID"
+  type = string
+  default = null
+}
+
+variable "oidc_google_client_secret" {
+  description = "OIDC Client secret"
+  type = string
+  sensitive = true
+  default = null
 }
