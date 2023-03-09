@@ -1,4 +1,4 @@
-# Grand permissions on k8s specific path
-path "k8s/*" {
+# Grand permissions on a KV
+path "${kv_name}/*" {
   capabilities = [ "create", "read", "update", "delete", "list" ]
 }
