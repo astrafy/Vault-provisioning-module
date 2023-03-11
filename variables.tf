@@ -60,3 +60,28 @@ variable "oidc_google_client_secret" {
   sensitive = true
   default = null
 }
+
+variable "kv_secret_engines" {
+  description = "Definitions of KV secret engines"
+  type = list(string)
+  default = []
+}
+
+variable "kubernetes_auth_backends" {
+  description = "Create Kubernetes auth backends"
+  type = map(object({
+    kubernetes_host = string
+    disable_iss_validation = bool
+  }))
+  default = {}
+}
+
+variable "kubernetes_auth_backend_roles" {
+  description = "Kubernetes auth backend roles"
+  type = map(object({
+    backend = string
+    bound_service_account_names = list(string)
+    bound_service_account_namespaces = list(string)
+    token_policies = list(string)
+  }))
+}

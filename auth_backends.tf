@@ -4,7 +4,7 @@ resource "vault_gcp_auth_backend" "gcp" {
 }
 
 resource "vault_gcp_auth_backend_role" "this" {
-  for_each = var.gcp_auth_backend_roles
+  for_each               = var.gcp_auth_backend_roles
   backend                = var.enable_gcp_auth_backend ? vault_gcp_auth_backend.gcp[0].path : "gcp"
   role                   = each.key
   type                   = "iam"
@@ -14,7 +14,7 @@ resource "vault_gcp_auth_backend_role" "this" {
 }
 
 resource "vault_jwt_auth_backend" "oidc_google" {
-  count = var.enable_oidc_google ? 1 : 0
+  count              = var.enable_oidc_google ? 1 : 0
   description        = "OIDC Google Provider"
   path               = "oidc"
   type               = "oidc"
@@ -26,12 +26,35 @@ resource "vault_jwt_auth_backend" "oidc_google" {
 }
 
 resource "vault_jwt_auth_backend_role" "this" {
-  for_each = var.jwt_auth_backend_roles
-  backend   = each.value.backend
-  role_name = each.key
-  token_policies = [for item in each.value.token_policies : vault_policy.this[item].name]
-  user_claim = "sub"
-  role_type  = each.value.role_type
+  for_each              = var.jwt_auth_backend_roles
+  backend               = each.value.backend
+  role_name             = each.key
+  token_policies        = [for item in each.value.token_policies : vault_policy.this[item].name]
+  user_claim            = "sub"
+  role_type             = each.value.role_type
   allowed_redirect_uris = each.value.allowed_redirect_uris
-  depends_on = [vault_jwt_auth_backend.oidc_google]
+  depends_on            = [vault_jwt_auth_backend.oidc_google]
+}
+
+resource "vault_auth_backend" "kubernetes" {
+  for_each = var.kubernetes_auth_backends
+  type     = "kubernetes"
+  path     = each.key
+}
+
+resource "vault_kubernetes_auth_backend_config" "kubernetes" {
+  for_each               = var.kubernetes_auth_backends
+  backend                = vault_auth_backend.kubernetes[each.key].path
+  kubernetes_host        = each.value.kubernetes_host
+  disable_iss_validation = each.value.disable_iss_validation
+}
+
+resource "vault_kubernetes_auth_backend_role" "kubernetes" {
+  for_each                         = var.kubernetes_auth_backend_roles
+  backend                          = vault_auth_backend.kubernetes[each.value.backend].path
+  role_name                        = each.key
+  bound_service_account_names      = each.value.bound_service_account_names
+  bound_service_account_namespaces = each.value.bound_service_account_namespaces
+  token_policies                   = [for item in each.value.token_policies : vault_policy.this[item].name]
+  token_ttl                        = 3600
 }

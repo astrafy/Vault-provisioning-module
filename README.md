@@ -19,10 +19,15 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [vault_auth_backend.kubernetes](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/auth_backend) | resource |
 | [vault_gcp_auth_backend.gcp](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/gcp_auth_backend) | resource |
 | [vault_gcp_auth_backend_role.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/gcp_auth_backend_role) | resource |
 | [vault_jwt_auth_backend.oidc_google](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/jwt_auth_backend) | resource |
 | [vault_jwt_auth_backend_role.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/jwt_auth_backend_role) | resource |
+| [vault_kubernetes_auth_backend_config.kubernetes](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/kubernetes_auth_backend_config) | resource |
+| [vault_kubernetes_auth_backend_role.kubernetes](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/kubernetes_auth_backend_role) | resource |
+| [vault_kv_secret_backend_v2.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/kv_secret_backend_v2) | resource |
+| [vault_mount.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/mount) | resource |
 | [vault_policy.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/policy) | resource |
 
 ## Inputs
@@ -33,6 +38,9 @@ No modules.
 | <a name="input_enable_oidc_google"></a> [enable\_oidc\_google](#input\_enable\_oidc\_google) | Enable Google OIDC for SSO | `bool` | `false` | no |
 | <a name="input_gcp_auth_backend_roles"></a> [gcp\_auth\_backend\_roles](#input\_gcp\_auth\_backend\_roles) | GCP auth backend roles to create. Bound service account must exist and policies must be created using the `policies` variable | <pre>map(object({<br>    bound_service_accounts = list(string)<br>    token_policies = list(string)<br>  }))</pre> | `{}` | no |
 | <a name="input_jwt_auth_backend_roles"></a> [jwt\_auth\_backend\_roles](#input\_jwt\_auth\_backend\_roles) | JWT auth backend roles to create. Policies must be created using the `policies` variable | <pre>map(object({<br>    backend = string<br>    role_type = string<br>    token_policies = list(string)<br>    allowed_redirect_uris = list(string)<br>  }))</pre> | `{}` | no |
+| <a name="input_kubernetes_auth_backend_roles"></a> [kubernetes\_auth\_backend\_roles](#input\_kubernetes\_auth\_backend\_roles) | Kubernetes auth backend roles | <pre>map(object({<br>    backend = string<br>    bound_service_account_names = list(string)<br>    bound_service_account_namespaces = list(string)<br>    token_policies = list(string)<br>  }))</pre> | n/a | yes |
+| <a name="input_kubernetes_auth_backends"></a> [kubernetes\_auth\_backends](#input\_kubernetes\_auth\_backends) | Create Kubernetes auth backends | <pre>map(object({<br>    kubernetes_host = string<br>    disable_iss_validation = bool<br>  }))</pre> | `{}` | no |
+| <a name="input_kv_secret_engines"></a> [kv\_secret\_engines](#input\_kv\_secret\_engines) | Definitions of KV secret engines | `list(string)` | `[]` | no |
 | <a name="input_oidc_google_client_id"></a> [oidc\_google\_client\_id](#input\_oidc\_google\_client\_id) | OIDC Client ID | `string` | `null` | no |
 | <a name="input_oidc_google_client_secret"></a> [oidc\_google\_client\_secret](#input\_oidc\_google\_client\_secret) | OIDC Client secret | `string` | `null` | no |
 | <a name="input_oidc_google_default_role"></a> [oidc\_google\_default\_role](#input\_oidc\_google\_default\_role) | Specifies a default role for Google OIDC | `string` | `null` | no |
