@@ -33,6 +33,7 @@ resource "vault_jwt_auth_backend_role" "this" {
   user_claim            = "sub"
   role_type             = each.value.role_type
   allowed_redirect_uris = each.value.allowed_redirect_uris
+  bound_claims          = each.value.bound_claims
   depends_on            = [vault_jwt_auth_backend.oidc_google]
 }
 

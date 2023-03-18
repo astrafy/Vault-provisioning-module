@@ -1,5 +1,5 @@
 resource "vault_mount" "this" {
-  for_each = toset(var.kv_secret_engines)
+  for_each    = toset(var.kv_secret_engines)
   path        = each.key
   type        = "kv"
   options     = { version = "2" }
@@ -8,5 +8,5 @@ resource "vault_mount" "this" {
 
 resource "vault_kv_secret_backend_v2" "this" {
   for_each = toset(var.kv_secret_engines)
-  mount = vault_mount.this[each.key].path
+  mount    = vault_mount.this[each.key].path
 }
