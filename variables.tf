@@ -39,6 +39,7 @@ variable "jwt_auth_backend_roles" {
     token_policies        = list(string)
     allowed_redirect_uris = list(string)
     bound_claims          = map(string)
+    oidc_scopes           = list(string)
   }))
   default = {}
 }

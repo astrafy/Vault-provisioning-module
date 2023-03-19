@@ -36,6 +36,7 @@ resource "vault_jwt_auth_backend_role" "this" {
   bound_claims          = each.value.bound_claims
   depends_on            = [vault_jwt_auth_backend.oidc_google]
   verbose_oidc_logging  = var.verbose_oidc_logging
+  oidc_scopes           = each.value.oidc_scopes
 }
 
 resource "vault_auth_backend" "kubernetes" {
