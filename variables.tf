@@ -62,6 +62,12 @@ variable "oidc_google_client_secret" {
   default     = null
 }
 
+variable "verbose_oidc_logging" {
+  description = "Verbose OIDC logging. Will save ID token in logs. Should not be used in production"
+  type        = bool
+  default     = false
+}
+
 variable "kv_secret_engines" {
   description = "Definitions of KV secret engines"
   type        = list(string)
