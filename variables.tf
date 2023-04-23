@@ -31,6 +31,15 @@ variable "enable_oidc_google" {
   default     = false
 }
 
+variable "jwt_auth_backends" {
+  description = "Create JWT auth backends"
+  type = map(object({
+    oidc_discovery_url        = string
+    bound_issuer = string
+  }))
+  default = {}
+}
+
 variable "jwt_auth_backend_roles" {
   description = "JWT auth backend roles to create. Policies must be created using the `policies` variable"
   type = map(object({
@@ -38,6 +47,7 @@ variable "jwt_auth_backend_roles" {
     role_type             = string
     token_policies        = list(string)
     allowed_redirect_uris = list(string)
+    claim_mappings = map(string)
     bound_claims          = map(string)
     oidc_scopes           = list(string)
   }))
