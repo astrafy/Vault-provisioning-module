@@ -26,11 +26,11 @@ resource "vault_jwt_auth_backend" "oidc_google" {
 }
 
 resource "vault_jwt_auth_backend" "this" {
-  for_each = var.jwt_auth_backends
-  path = each.key
-  type = "jwt"
+  for_each           = var.jwt_auth_backends
+  path               = each.key
+  type               = "jwt"
   oidc_discovery_url = each.value.oidc_discovery_url
-  bound_issuer = each.value.bound_issuer
+  bound_issuer       = each.value.bound_issuer
 }
 
 resource "vault_jwt_auth_backend_role" "this" {
@@ -42,7 +42,8 @@ resource "vault_jwt_auth_backend_role" "this" {
   role_type             = each.value.role_type
   allowed_redirect_uris = each.value.allowed_redirect_uris
   bound_claims          = each.value.bound_claims
-  claim_mappings = each.value.claim_mappings
+  bound_claims_type     = each.value.bound_claims_type
+  claim_mappings        = each.value.claim_mappings
   depends_on            = [vault_jwt_auth_backend.oidc_google]
   verbose_oidc_logging  = var.verbose_oidc_logging
   oidc_scopes           = each.value.oidc_scopes
