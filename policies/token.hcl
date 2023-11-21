@@ -12,3 +12,8 @@ path "auth/token/renew-self" {
 path "auth/token/revoke-self" {
   capabilities = ["update"]
 }
+
+# Allow to create token
+path "auth/token/create" {
+  capabilities = ["update"]
+}
