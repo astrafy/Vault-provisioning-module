@@ -1,13 +1,7 @@
 variable "policies" {
   description = "Vault policies to create from template"
-  type = map(object({
-    template = string
-    params = list(object({
-      key   = string
-      value = string
-    }))
-  }))
-  default = {}
+  type        = map(string)
+  default     = {}
 }
 
 variable "enable_gcp_auth_backend" {
@@ -103,4 +97,18 @@ variable "kubernetes_auth_backend_roles" {
     bound_service_account_namespaces = list(string)
     token_policies                   = list(string)
   }))
+}
+
+variable "groups" {
+  description = <<EOT
+    Map from the group of google workspace to the role in Vault. 
+    Example: {group@company.io: k8s-reader}
+  EOT
+  type        = map(list(string))
+  default     = {}
+}
+
+variable "gsuite_domain" {
+  description = "Domain of the Google Workspace organization to access Vault. Ex: astrafy.io"
+  type        = string
 }
