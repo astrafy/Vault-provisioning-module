@@ -23,6 +23,11 @@ resource "vault_jwt_auth_backend" "oidc_google" {
   oidc_client_secret = var.oidc_google_client_secret
   bound_issuer       = "https://accounts.google.com"
   default_role       = var.oidc_google_default_role
+  provider_config = {
+    provider     = "gsuite"
+    fetch_groups = true
+    domain       = "rubyx.io"
+  }
 }
 
 resource "vault_jwt_auth_backend" "this" {
@@ -39,6 +44,7 @@ resource "vault_jwt_auth_backend_role" "this" {
   role_name             = each.key
   token_policies        = [for item in each.value.token_policies : vault_policy.this[item].name]
   user_claim            = "sub"
+  groups_claim          = "groups"
   role_type             = each.value.role_type
   allowed_redirect_uris = each.value.allowed_redirect_uris
   bound_claims          = each.value.bound_claims
