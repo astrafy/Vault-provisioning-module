@@ -26,7 +26,7 @@ resource "vault_jwt_auth_backend" "oidc_google" {
   provider_config = {
     provider     = "gsuite"
     fetch_groups = true
-    domain       = "rubyx.io"
+    domain       = var.gsuite_domain
   }
 }
 

@@ -102,8 +102,13 @@ variable "kubernetes_auth_backend_roles" {
 variable "groups" {
   description = <<EOT
     Map from the group of google workspace to the role in Vault. 
-    Example: {group@rubyx.io: k8s-reader}
+    Example: {group@company.io: k8s-reader}
   EOT
   type        = map(list(string))
   default     = {}
+}
+
+variable "gsuite_domain" {
+  description = "Domain of the Google Workspace organization to access Vault. Ex: astrafy.io"
+  type        = string
 }
