@@ -22,6 +22,8 @@ No modules.
 | [vault_auth_backend.kubernetes](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/auth_backend) | resource |
 | [vault_gcp_auth_backend.gcp](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/gcp_auth_backend) | resource |
 | [vault_gcp_auth_backend_role.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/gcp_auth_backend_role) | resource |
+| [vault_identity_group.group](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group) | resource |
+| [vault_identity_group_alias.group-alias](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group_alias) | resource |
 | [vault_jwt_auth_backend.oidc_google](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/jwt_auth_backend) | resource |
 | [vault_jwt_auth_backend.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/jwt_auth_backend) | resource |
 | [vault_jwt_auth_backend_role.this](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/jwt_auth_backend_role) | resource |
@@ -38,7 +40,9 @@ No modules.
 | <a name="input_enable_gcp_auth_backend"></a> [enable\_gcp\_auth\_backend](#input\_enable\_gcp\_auth\_backend) | Enable GCP authentication backend | `bool` | `false` | no |
 | <a name="input_enable_oidc_google"></a> [enable\_oidc\_google](#input\_enable\_oidc\_google) | Enable Google OIDC for SSO | `bool` | `false` | no |
 | <a name="input_gcp_auth_backend_roles"></a> [gcp\_auth\_backend\_roles](#input\_gcp\_auth\_backend\_roles) | GCP auth backend roles to create. Bound service account must exist and policies must be created using the `policies` variable | <pre>map(object({<br>    bound_service_accounts = list(string)<br>    token_policies         = list(string)<br>  }))</pre> | `{}` | no |
-| <a name="input_jwt_auth_backend_roles"></a> [jwt\_auth\_backend\_roles](#input\_jwt\_auth\_backend\_roles) | JWT auth backend roles to create. Policies must be created using the `policies` variable | <pre>map(object({<br>    backend               = string<br>    role_type             = string<br>    token_policies        = list(string)<br>    allowed_redirect_uris = list(string)<br>    claim_mappings        = map(string)<br>    bound_claims          = map(string)<br>    bound_claims_type     = string<br>    oidc_scopes           = list(string)<br>  }))</pre> | `{}` | no |
+| <a name="input_groups"></a> [groups](#input\_groups) | Map from the group of google workspace to the role in Vault. <br>    Example: {group@company.io: k8s-reader} | `map(list(string))` | `{}` | no |
+| <a name="input_gsuite_domain"></a> [gsuite\_domain](#input\_gsuite\_domain) | Domain of the Google Workspace organization to access Vault. Ex: astrafy.io | `string` | n/a | yes |
+| <a name="input_jwt_auth_backend_roles"></a> [jwt\_auth\_backend\_roles](#input\_jwt\_auth\_backend\_roles) | JWT auth backend roles to create. Policies must be created using the `policies` variable | <pre>map(object({<br>    backend               = string<br>    role_type             = string<br>    token_policies        = list(string)<br>    allowed_redirect_uris = list(string)<br>    groups_claim          = string<br>    claim_mappings        = map(string)<br>    bound_claims          = map(string)<br>    bound_claims_type     = string<br>    oidc_scopes           = list(string)<br>  }))</pre> | `{}` | no |
 | <a name="input_jwt_auth_backends"></a> [jwt\_auth\_backends](#input\_jwt\_auth\_backends) | Create JWT auth backends | <pre>map(object({<br>    oidc_discovery_url = string<br>    bound_issuer       = string<br>  }))</pre> | `{}` | no |
 | <a name="input_kubernetes_auth_backend_roles"></a> [kubernetes\_auth\_backend\_roles](#input\_kubernetes\_auth\_backend\_roles) | Kubernetes auth backend roles | <pre>map(object({<br>    backend                          = string<br>    bound_service_account_names      = list(string)<br>    bound_service_account_namespaces = list(string)<br>    token_policies                   = list(string)<br>  }))</pre> | n/a | yes |
 | <a name="input_kubernetes_auth_backends"></a> [kubernetes\_auth\_backends](#input\_kubernetes\_auth\_backends) | Create Kubernetes auth backends | <pre>map(object({<br>    kubernetes_host        = string<br>    disable_iss_validation = bool<br>  }))</pre> | `{}` | no |
@@ -46,7 +50,7 @@ No modules.
 | <a name="input_oidc_google_client_id"></a> [oidc\_google\_client\_id](#input\_oidc\_google\_client\_id) | OIDC Client ID | `string` | `null` | no |
 | <a name="input_oidc_google_client_secret"></a> [oidc\_google\_client\_secret](#input\_oidc\_google\_client\_secret) | OIDC Client secret | `string` | `null` | no |
 | <a name="input_oidc_google_default_role"></a> [oidc\_google\_default\_role](#input\_oidc\_google\_default\_role) | Specifies a default role for Google OIDC | `string` | `null` | no |
-| <a name="input_policies"></a> [policies](#input\_policies) | Vault policies to create from template | <pre>map(object({<br>    template = string<br>    params = list(object({<br>      key   = string<br>      value = string<br>    }))<br>  }))</pre> | `{}` | no |
+| <a name="input_policies"></a> [policies](#input\_policies) | Vault policies to create from template | `map(string)` | `{}` | no |
 | <a name="input_verbose_oidc_logging"></a> [verbose\_oidc\_logging](#input\_verbose\_oidc\_logging) | Verbose OIDC logging. Will save ID token in logs. Should not be used in production | `bool` | `false` | no |
 
 ## Outputs

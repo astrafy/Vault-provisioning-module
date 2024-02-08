@@ -41,6 +41,7 @@ variable "jwt_auth_backend_roles" {
     role_type             = string
     token_policies        = list(string)
     allowed_redirect_uris = list(string)
+    groups_claim          = optional(string, null)
     claim_mappings        = map(string)
     bound_claims          = map(string)
     bound_claims_type     = string
