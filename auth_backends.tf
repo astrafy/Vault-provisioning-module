@@ -44,7 +44,7 @@ resource "vault_jwt_auth_backend_role" "this" {
   role_name             = each.key
   token_policies        = [for item in each.value.token_policies : vault_policy.this[item].name]
   user_claim            = "sub"
-  groups_claim          = "groups"
+  groups_claim          = each.value.groups_claim
   role_type             = each.value.role_type
   allowed_redirect_uris = each.value.allowed_redirect_uris
   bound_claims          = each.value.bound_claims
